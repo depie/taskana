@@ -5,6 +5,7 @@ import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.StringStartsWith.startsWith;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -17,11 +18,10 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import pro.taskana.Classification;
 import pro.taskana.ClassificationService;
@@ -57,14 +57,14 @@ public class ClassificationServiceImplIntExplicitTest {
     private TaskanaEngine taskanaEngine;
     private TaskanaEngineImpl taskanaEngineImpl;
 
-    @BeforeClass
+    @BeforeAll
     public static void resetDb() {
         DataSource ds = TaskanaEngineConfigurationTest.getDataSource();
         DBCleaner cleaner = new DBCleaner();
         cleaner.clearDb(ds, true);
     }
 
-    @Before
+    @BeforeEach
     public void setup() throws SQLException {
         dataSource = TaskanaEngineConfigurationTest.getDataSource();
         taskanaEngineConfiguration = new TaskanaEngineConfiguration(dataSource, false, false,
@@ -132,7 +132,7 @@ public class ClassificationServiceImplIntExplicitTest {
         classification2.setParentId(classification0.getId());
         classificationService.createClassification(classification2);
 
-        Assert.assertEquals(2 + 1, classificationService.createClassificationQuery().list().size());
+        assertEquals(2 + 1, classificationService.createClassificationQuery().list().size());
         connection.commit();
     }
 
@@ -168,7 +168,7 @@ public class ClassificationServiceImplIntExplicitTest {
             .validInDomainEquals(Boolean.TRUE)
             .createdWithin(today())
             .list();
-        Assert.assertEquals(1, list.size());
+        assertEquals(1, list.size());
     }
 
     @Test
@@ -185,19 +185,19 @@ public class ClassificationServiceImplIntExplicitTest {
 
         List<ClassificationSummary> list = classificationService.createClassificationQuery()
             .list();
-        Assert.assertEquals(2, list.size());
+        assertEquals(2, list.size());
         list = classificationService.createClassificationQuery().validInDomainEquals(true).list();
-        Assert.assertEquals(1, list.size());
+        assertEquals(1, list.size());
         classification = classificationService.getClassification(classification.getKey(), classification.getDomain());
         assertThat(classification.getDescription(), equalTo("description"));
 
         classification = classificationService.updateClassification(classification);
         list = classificationService.createClassificationQuery()
             .list();
-        Assert.assertEquals(2, list.size());
+        assertEquals(2, list.size());
 
         List<ClassificationSummary> allClassifications = classificationService.createClassificationQuery().list();
-        Assert.assertEquals(2, allClassifications.size());
+        assertEquals(2, allClassifications.size());
         connection.commit();
     }
 
@@ -218,32 +218,32 @@ public class ClassificationServiceImplIntExplicitTest {
         List<ClassificationSummary> list = classificationService.createClassificationQuery()
             .parentIdIn("")
             .list();
-        Assert.assertEquals(3, list.size());
+        assertEquals(3, list.size());
         list = classificationService.createClassificationQuery()
             .list();
-        Assert.assertEquals(4, list.size());
+        assertEquals(4, list.size());
         connection.commit();
 
         list = classificationService.createClassificationQuery().validInDomainEquals(true).list();
-        Assert.assertEquals(2, list.size());
+        assertEquals(2, list.size());
         list = classificationService.createClassificationQuery().createdWithin(today()).list();
-        Assert.assertEquals(4, list.size());
+        assertEquals(4, list.size());
         list = classificationService.createClassificationQuery().domainIn("DOMAIN_C").validInDomainEquals(false).list();
-        Assert.assertEquals(0, list.size());
+        assertEquals(0, list.size());
         list = classificationService.createClassificationQuery()
             .keyIn(classification1.getKey())
             .list();
-        Assert.assertEquals(2, list.size());
+        assertEquals(2, list.size());
 
         list = classificationService.createClassificationQuery()
             .parentIdIn(classification.getId())
             .list();
-        Assert.assertEquals(1, list.size());
+        assertEquals(1, list.size());
         assertThat(list.get(0).getKey(), equalTo(classification1.getKey()));
         connection.commit();
     }
 
-    @After
+    @AfterEach
     public void cleanUp() throws SQLException {
         taskanaEngineImpl.setConnection(null);
     }

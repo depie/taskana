@@ -1,5 +1,7 @@
 package pro.taskana.impl.configuration;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,8 +13,7 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import org.apache.ibatis.datasource.pooled.PooledDataSource;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +40,7 @@ public class TaskanaEngineConfigurationTest {
 
         TaskanaEngine te = taskEngineConfiguration.buildTaskanaEngine();
 
-        Assert.assertNotNull(te);
+        assertNotNull(te);
     }
 
     /**

@@ -1,8 +1,8 @@
 package pro.taskana.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -11,8 +11,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import pro.taskana.exceptions.InvalidArgumentException;
 import pro.taskana.impl.report.header.TimeIntervalColumnHeader;
@@ -22,7 +22,7 @@ import pro.taskana.impl.report.header.TimeIntervalColumnHeader;
  */
 public class DaysToWorkingDaysConverterTest {
 
-    @BeforeClass
+    @BeforeAll
     public static void setup() {
         DaysToWorkingDaysConverter.setGermanPublicHolidaysEnabled(true);
         LocalDate dayOfReformation = LocalDate.of(2018, 10, 31);

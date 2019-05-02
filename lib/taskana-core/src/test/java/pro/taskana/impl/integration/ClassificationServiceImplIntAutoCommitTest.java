@@ -1,6 +1,7 @@
 package pro.taskana.impl.integration;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.sql.SQLException;
 import java.time.Instant;
@@ -13,9 +14,9 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import pro.taskana.Classification;
 import pro.taskana.ClassificationService;
@@ -48,14 +49,14 @@ public class ClassificationServiceImplIntAutoCommitTest {
     private TaskanaEngine taskanaEngine;
     private TaskanaEngineImpl taskanaEngineImpl;
 
-    @BeforeClass
+    @BeforeAll
     public static void resetDb() {
         DataSource ds = TaskanaEngineConfigurationTest.getDataSource();
         DBCleaner cleaner = new DBCleaner();
         cleaner.clearDb(ds, true);
     }
 
-    @Before
+    @BeforeEach
     public void setup() throws SQLException {
         dataSource = TaskanaEngineConfigurationTest.getDataSource();
         taskanaEngineConfiguration = new TaskanaEngineConfiguration(dataSource, false, false,
@@ -80,7 +81,7 @@ public class ClassificationServiceImplIntAutoCommitTest {
         classification2.setParentId(classification0.getId());
         classificationService.createClassification(classification2);
 
-        Assert.assertEquals(2 + 1, classificationService.createClassificationQuery().list().size());
+        assertEquals(2 + 1, classificationService.createClassificationQuery().list().size());
     }
 
     @Test

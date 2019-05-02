@@ -1,21 +1,20 @@
 package pro.taskana.impl;
 
-import static junit.framework.TestCase.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import pro.taskana.Classification;
 import pro.taskana.JobService;
@@ -32,7 +31,7 @@ import pro.taskana.mappings.JobMapper;
  *
  * @author EH
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ClassificationServiceImplTest {
 
     @Spy
@@ -49,30 +48,22 @@ public class ClassificationServiceImplTest {
     @Mock
     private JobService jobServiceMock;
 
-    @Before
-    public void setup() {
-        doNothing().when(taskanaEngineImplMock).openConnection();
-        doNothing().when(taskanaEngineImplMock).returnConnection();
-    }
-
     @Test
     public void testCreateClassificationQuery() {
         cutSpy.createClassificationQuery();
         verifyNoMoreInteractions(classificationMapperMock, taskanaEngineImplMock, classificationQueryImplMock);
     }
 
-    @Test(expected = InvalidArgumentException.class)
+    @Test
     public void testThrowExceptionIdIfClassificationIsCreatedWithAnExplicitId()
         throws DomainNotFoundException, InvalidArgumentException,
         NotAuthorizedException, ClassificationAlreadyExistException {
-        try {
-            Classification classification = createDummyClassification();
-            when(taskanaEngineImplMock.domainExists(any())).thenReturn(true);
-            cutSpy.createClassification(classification);
-        } catch (InvalidArgumentException e) {
-            assertEquals(e.getMessage(), "ClassificationId should be null on creation");
-            throw e;
-        }
+        Classification classification = createDummyClassification();
+        when(taskanaEngineImplMock.domainExists(any())).thenReturn(true);
+        InvalidArgumentException e = assertThrows(InvalidArgumentException.class,
+            () -> cutSpy.createClassification(classification));
+        assertEquals(e.getMessage(), "ClassificationId should be null on creation");
+
     }
 
     private Classification createDummyClassification() {

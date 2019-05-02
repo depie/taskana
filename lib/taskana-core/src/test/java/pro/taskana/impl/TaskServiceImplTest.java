@@ -1161,15 +1161,13 @@ public class TaskServiceImplTest {
         assertThat(actualTask, equalTo(expectedTask));
     }
 
-    @Test(expected = TaskNotFoundException.class)
+    @Test
     public void testGetTaskByIdWhereTaskDoesNotExist() throws Exception {
         Classification dummyClassification = createDummyClassification();
         Task task = createUnitTestTask("1", "DUMMY-TASK", "1", dummyClassification);
-        when(taskMapperMock.findById(task.getId())).thenThrow(TaskNotFoundException.class);
-
         try {
             cut.getTask(task.getId());
-        } catch (Exception e) {
+        } catch (TaskNotFoundException e) {
             verify(taskanaEngineMock, times(1)).openConnection();
             verify(taskMapperMock, times(1)).findById(task.getId());
             verify(taskanaEngineMock, times(1)).returnConnection();
@@ -1177,7 +1175,6 @@ public class TaskServiceImplTest {
                 taskanaEngineMock,
                 taskMapperMock, objectReferenceMapperMock, workbasketServiceMock, sqlSessionMock,
                 classificationQueryImplMock);
-            throw e;
         }
     }
 

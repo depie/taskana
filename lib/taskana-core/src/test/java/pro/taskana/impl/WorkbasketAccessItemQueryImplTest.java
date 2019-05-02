@@ -1,5 +1,6 @@
 package pro.taskana.impl;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -7,12 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import pro.taskana.WorkbasketAccessItem;
 
@@ -21,7 +21,7 @@ import pro.taskana.WorkbasketAccessItem;
  *
  * @author jsa
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class WorkbasketAccessItemQueryImplTest {
 
     private WorkbasketAccessItemQueryImpl workbasketAccessItemQueryImpl;
@@ -32,7 +32,7 @@ public class WorkbasketAccessItemQueryImplTest {
     @Mock
     private SqlSession sqlSession;
 
-    @Before
+    @BeforeEach
     public void setup() {
         workbasketAccessItemQueryImpl = new WorkbasketAccessItemQueryImpl(taskanaEngine);
     }
@@ -44,7 +44,7 @@ public class WorkbasketAccessItemQueryImplTest {
 
         List<WorkbasketAccessItem> result = workbasketAccessItemQueryImpl.accessIdIn("test", "asd")
             .list();
-        Assert.assertNotNull(result);
+        assertNotNull(result);
     }
 
     @Test
@@ -54,7 +54,7 @@ public class WorkbasketAccessItemQueryImplTest {
 
         List<WorkbasketAccessItem> result = workbasketAccessItemQueryImpl.accessIdIn("test", "asd")
             .list(1, 1);
-        Assert.assertNotNull(result);
+        assertNotNull(result);
     }
 
     @Test
@@ -64,6 +64,6 @@ public class WorkbasketAccessItemQueryImplTest {
 
         WorkbasketAccessItem result = workbasketAccessItemQueryImpl.accessIdIn("test", "asd")
             .single();
-        Assert.assertNotNull(result);
+        assertNotNull(result);
     }
 }

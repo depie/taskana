@@ -1,5 +1,6 @@
 package pro.taskana.impl;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -7,12 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import pro.taskana.ClassificationSummary;
 
@@ -21,7 +21,7 @@ import pro.taskana.ClassificationSummary;
  *
  * @author EH
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class ClassificationQueryImplTest {
 
     private ClassificationQueryImpl classificationQueryImpl;
@@ -32,7 +32,7 @@ public class ClassificationQueryImplTest {
     @Mock
     private SqlSession sqlSession;
 
-    @Before
+    @BeforeEach
     public void setup() {
         classificationQueryImpl = new ClassificationQueryImpl(taskanaEngine);
     }
@@ -47,7 +47,7 @@ public class ClassificationQueryImplTest {
             .priorityIn(1, 2)
             .parentIdIn("superId")
             .list();
-        Assert.assertNotNull(result);
+        assertNotNull(result);
     }
 
     @Test
@@ -60,7 +60,7 @@ public class ClassificationQueryImplTest {
             .priorityIn(1, 2)
             .parentIdIn("superId")
             .list(1, 1);
-        Assert.assertNotNull(result);
+        assertNotNull(result);
     }
 
     @Test
@@ -73,6 +73,6 @@ public class ClassificationQueryImplTest {
             .priorityIn(1, 2)
             .parentIdIn("superId")
             .single();
-        Assert.assertNotNull(result);
+        assertNotNull(result);
     }
 }

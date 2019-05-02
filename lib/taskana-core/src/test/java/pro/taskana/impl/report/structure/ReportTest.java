@@ -1,7 +1,7 @@
 package pro.taskana.impl.report.structure;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import pro.taskana.impl.report.header.TimeIntervalColumnHeader;
 import pro.taskana.impl.report.item.MonitorQueryItem;
@@ -27,7 +27,7 @@ public class ReportTest {
     private Report<MonitorQueryItem, TimeIntervalColumnHeader> report;
     private MonitorQueryItem item;
 
-    @Before
+    @BeforeEach
     public void before() {
         this.report = new Report<MonitorQueryItem, TimeIntervalColumnHeader>(HEADERS, new String[] {"rowDesc"}) {
 
